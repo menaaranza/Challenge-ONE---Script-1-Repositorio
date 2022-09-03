@@ -7,14 +7,25 @@
 const inputTexto = document.querySelector(".input-texto");
 const mensaje = document.querySelector(".mensaje");
 const botonCopy = document.querySelector(".copiar");
+const backgroundImage = mensaje.style.backgroundImage;
+const textoError = document.getElementById("error");
 
 //Encriptar mensaje
 function botonEncriptar(){
-    const textoEncriptado = encriptar(inputTexto.value);
-    mensaje.value = textoEncriptado;
-    mensaje.style.backgroundImage = "None";
-    inputTexto.value = "";
-    botonCopy.style.display = "block";
+    if(inputTexto.value == ""){
+        document.getElementById("text-id").value = ""
+        mensaje.style.backgroundImage = backgroundImage;
+        console.log("backgroundImage")
+        textoError.className = ""
+    }
+    else{
+        const textoEncriptado = encriptar(inputTexto.value);
+        mensaje.value = textoEncriptado;
+        mensaje.style.backgroundImage = "None";
+        inputTexto.value = "";
+        botonCopy.style.display = "block";
+        textoError.className = "hidden";
+    }
 }
 
 function encriptar(textoEncriptada){
@@ -45,17 +56,28 @@ function desencriptar(textoDesencriptada){
 }
 
 function botonDesencriptar(){
-    const textoEncriptado = desencriptar(inputTexto.value);
-    mensaje.value = textoEncriptado;
-    mensaje.style.backgroundImage = "None";
-    inputTexto.value = "";
-    botonCopy.style.display = "block";
+    if(inputTexto.value == ""){
+        document.getElementById("text-id").value = ""
+        mensaje.style.backgroundImage = backgroundImage;
+        textoError.className = ""
+    }
+    else{
+        const textoEncriptado = desencriptar(inputTexto.value);
+        mensaje.value = textoEncriptado;
+        mensaje.style.backgroundImage = "None";
+        inputTexto.value = "";
+        textoError.className = "hidden"
+        botonCopy.style.display = "block";
+    }
 }
 
-//botón copiar, aun falta perfeccionarla. No se copia nada, solo hace el click
+//botón copiar
 function copiar(){
-    mensaje.select();
-    navigator.clipboard.writeText(mensaje.value);
-    mensaje.value = ""
-    alert("Texto copiado!");
+    var message = document.getElementById("text-id")
+    console.log("mensaje",message.value);
+    navigator.clipboard.writeText(message.value).then(() => {
+        alert("Texto copiado!");    
+    }).catch(() => {
+        alert("Fallo");
+    });
 }
